@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="./css/colpick.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+</head>
+
+<div class="form-group row">
+	<div class="col-sm-12">
+		<div class="col-sm-2">
+			Shadow Color:
+		</div>
+		<div class="col-sm-4">
+			<input type="text" data-type="textinput" data-css="box-shadow-color" class="box-shadow-color" size="7">
+		</div>
+	</div><BR><BR>
+	<div class="col-sm-12">
+		<div class="col-sm-2">
+			Offset Distance: 
+		</div>
+		<div class="col-sm-4">
+			<input style="width:250px" class="box-shadow-offset"  type="range" min="0" max="20" step="1" value="3"/>
+		</div>
+	</div><BR><BR>
+	<div class="col-sm-12">
+		<div class="col-sm-2">
+			Blur Distance: 
+		</div>
+		<div class="col-sm-4">
+			<input style="width:250px" class="box-shadow-blur"  type="range" min="0" max="20" step="1" value="3"/>
+		</div>
+	</div><BR><BR>
+	<div class="col-sm-12">
+		<div class="col-sm-2">
+			Angle: 
+		</div>
+		<div class="col-sm-4">
+			Box:<input type="text" data-thickness=".8" value="0" data-max="360" class="boxDial angleDial">
+		</div>
+		<div class="col-sm-4">
+			Text:<input type="text" data-thickness=".8" value="0" data-max="360" class="textDial angleDial">
+		</div>
+	</div>
+</div>
+
+	<div class="exampleBox" style="position:relative;height:100px;width:100px;background-color:#F00;margin-left:100px;"></div>
+	<BR><BR>
+	<div class="exampleText" style="position:relative;margin-left:100px;font-size:30px;">This is some Example Text</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="./js/shadowDial.js"></script>
+<script src="./js/colpick.js"></script>
+<script src="./js/jquery.knob.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+<script>
+$(".textDial").knob({
+	angleOffset :"-90",
+	max:"360",
+	angleArc:"360",
+	width:"75", 
+	height:"75", 
+	cursor:true,  
+	displayInput :false, 
+	bgColor:"#ccc", 
+	fgColor:"#222222",
+	'change' : function (value) { 
+		dropStyle.dropShadow.angle = value *(-1);
+		$('.exampleText').css("text-shadow", fontShadow(dropStyle));
+	}
+});
+
+$(".boxDial").knob({
+	angleOffset :"-90",
+	max:"360",
+	angleArc:"360",
+	width:"75", 
+	height:"75", 
+	cursor:true,  
+	displayInput :false, 
+	bgColor:"#ccc", 
+	fgColor:"#222222",
+	'change' : function (value) { 
+		dropStyle.dropShadow.angle = value *(-1);
+		$('.exampleBox').css("box-shadow", boxShadow(dropStyle));
+	}
+});
+$(".box-shadow-offset").on("input", function(){
+		dropStyle.dropShadow.distance = $(".box-shadow-offset").val();
+		$('.exampleBox').css("box-shadow", boxShadow(dropStyle));
+});
+$(".box-shadow-blur").on("input", function(){
+		dropStyle.dropShadow.blur = $(".box-shadow-blur").val();
+		$('.exampleBox').css("box-shadow", boxShadow(dropStyle));
+});
+
+$('.box-shadow-color').unbind('click').click(function(){
+	pickercss= $(this).attr("data-css");
+	
+	$('.box-shadow-color').colpick({
+		layout:'hex',
+		submit:0,
+		color:"#F0F",
+		colorScheme:'dark',
+		onChange:function(hsb,hex,rgb,el,bySetColor ) {
+			selectedItem = $(this).attr("data-id");
+				$(el).val('#'+hex);
+				if(!bySetColor){
+					dropStyle.dropShadow.color = [rgb.r, rgb.g, rgb.b];
+					$(el).val('#'+hex);
+					$('[data-type="sliderLayer"][data-layer="'+currentLayer+'"][data-slide="'+currentSlide+'"]').css("box-shadow", boxShadow(dropStyle));
+				}
+		editor.set(Slides);
+		}
+	});
+});
+</script>
