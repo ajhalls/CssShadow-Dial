@@ -108,7 +108,7 @@ $('.box-shadow-color').unbind('click').click(function(){
 				if(!bySetColor){
 					dropStyle.dropShadow.color = [rgb.r, rgb.g, rgb.b];
 					$(el).val('#'+hex);
-					$('[data-type="sliderLayer"][data-layer="'+currentLayer+'"][data-slide="'+currentSlide+'"]').css("box-shadow", boxShadow(dropStyle));
+					$('.exampleBox').css("box-shadow", boxShadow(dropStyle));
 				}
 		editor.set(Slides);
 		}
